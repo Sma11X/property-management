@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    dengluye
+    <el-button type="danger">Danger</el-button>
   </div>
 </template>
 
