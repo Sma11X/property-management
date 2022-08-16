@@ -28,11 +28,13 @@
             v-model="ruleForm.password"
             type="password"
             autocomplete="off"
+            minlength="6"
+            maxlength="15"
           />
         </el-form-item>
         <el-form-item prop="passwords" v-show="model === 'register'">
           <label>重复密码</label>
-          <el-input v-model.number="ruleForm.passwords" type="password"/>
+          <el-input v-model="ruleForm.passwords" type="password"/>
         </el-form-item>
         <el-form-item>
           <el-button 
@@ -69,39 +71,33 @@ let clickMenu = (item: any) => {
 
 const ruleFormRef = ref<FormInstance>()
 
-const checkAge = (rule: any, value: any, callback: any) => {
+const checkUserName = (rule: any, value: any, callback: any) => {
+  let reg = /^([a-zA-z]|[0-9])(\w|-)+@[a-zA-z0-9]+\.([a-zA-Z]{2,4})$/
   if (!value) {
-    return callback(new Error('Please input the age'))
+    return callback(new Error("邮箱不能为空"))
+  } else if (!reg.test(value)) {
+    return callback(new Error("邮箱格式有误"))
+  } else {
+    callback()
   }
-  setTimeout(() => {
-    if (!Number.isInteger(value)) {
-      callback(new Error('Please input digits'))
-    } else {
-      if (value < 18) {
-        callback(new Error('Age must be greater than 18'))
-      } else {
-        callback()
-      }
-    }
-  }, 1000)
 }
 
 const validatePass = (rule: any, value: any, callback: any) => {
-  if (value === '') {
-    callback(new Error('Please input the password'))
+  let reg = /^(?!\D+$)(?![^a-zA-Z]+$)\S{6,15}$/
+  if (!value) {
+    return callback(new Error("密码不能为空"))
+  } else if (!reg.test(value)) {
+    return callback(new Error("密码应为6-15位的字母和数字"))
   } else {
-    if (ruleForm.checkPass !== '') {
-      if (!ruleFormRef.value) return
-      ruleFormRef.value.validateField('checkPass', () => null)
-    }
     callback()
   }
 }
 const validatePass2 = (rule: any, value: any, callback: any) => {
+  if (model.value === "login") callback()
   if (value === '') {
-    callback(new Error('Please input the password again'))
-  } else if (value !== ruleForm.pass) {
-    callback(new Error("Two inputs don't match!"))
+    callback(new Error('重复密码不能为空'))
+  } else if (value !== ruleForm.password) {
+    callback(new Error("两次密码必须相同"))
   } else {
     callback()
   }
@@ -114,9 +110,9 @@ const ruleForm = reactive({
 })
 
 const rules = reactive({
-  pass: [{ validator: validatePass, trigger: 'blur' }],
-  checkPass: [{ validator: validatePass2, trigger: 'blur' }],
-  age: [{ validator: checkAge, trigger: 'blur' }],
+  userName: [{ validator: checkUserName, trigger: 'blur' }],
+  password: [{ validator: validatePass, trigger: 'blur' }],
+  passwords: [{ validator: validatePass2, trigger: 'blur' }],
 })
 
 const submitForm = (formEl: FormInstance | undefined) => {
@@ -131,10 +127,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
   })
 }
 
-const resetForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-  formEl.resetFields()
-}
 </script>
 
 <style lang="scss">
