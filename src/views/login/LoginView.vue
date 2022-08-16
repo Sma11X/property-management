@@ -53,6 +53,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import type { FormInstance } from 'element-plus'
+import * as ck from '../../utils/verification.js'
 
 const MenuData = reactive([
   {txt: "登录", current: true, type: "login"},
@@ -72,10 +73,10 @@ let clickMenu = (item: any) => {
 const ruleFormRef = ref<FormInstance>()
 
 const checkUserName = (rule: any, value: any, callback: any) => {
-  let reg = /^([a-zA-z]|[0-9])(\w|-)+@[a-zA-z0-9]+\.([a-zA-Z]{2,4})$/
+  
   if (!value) {
     return callback(new Error("邮箱不能为空"))
-  } else if (!reg.test(value)) {
+  } else if (ck.CheckEmail(value)) {
     return callback(new Error("邮箱格式有误"))
   } else {
     callback()
@@ -83,10 +84,9 @@ const checkUserName = (rule: any, value: any, callback: any) => {
 }
 
 const validatePass = (rule: any, value: any, callback: any) => {
-  let reg = /^(?!\D+$)(?![^a-zA-Z]+$)\S{6,15}$/
   if (!value) {
     return callback(new Error("密码不能为空"))
-  } else if (!reg.test(value)) {
+  } else if (ck.CheckPwd(value)) {
     return callback(new Error("密码应为6-15位的字母和数字"))
   } else {
     callback()
