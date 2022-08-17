@@ -1,6 +1,15 @@
 import axios from "axios"
 
-const service = axios.create()
+let axiosurl = ""
+if(process.env.NODE_ENV === "development") {
+  axiosurl = process.env.VUE_APP_API
+} else {
+  axiosurl = process.env.VUE_APP_API
+}
+console.log(process.env)
+const service = axios.create({
+  baseURL: axiosurl
+})
 
 // 添加请求拦截器
 service.interceptors.request.use(function (config) {

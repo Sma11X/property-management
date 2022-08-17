@@ -51,11 +51,15 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 import type { FormInstance } from 'element-plus'
 import * as ck from '../../utils/verification.js'
 import link from '../../api/Link.js'
 import apiUrl from '../../api/url.js'
+
+onMounted(() => {
+  console.log(process.env.VUE_APP_API)
+})
 
 const MenuData = reactive([
   {txt: "登录", current: true, type: "login"},
