@@ -1,8 +1,19 @@
 {
-  "one": [
-    {"name": "ab"},
-    {"name": "bc"},
-    {"name": "cd"},
-    {"name": "de"}
+  "register": [
+    {
+      "id": 1,
+      "name": "admin@163.com",
+      "pwd": "admin123"
+    },
+    {
+      "name": "123@163.com",
+      "pwd": "123qwe",
+      "id": 2
+    },
+    {
+      "name": "56@1.com",
+      "pwd": "abc123",
+      "id": 3
+    }
   ]
 }

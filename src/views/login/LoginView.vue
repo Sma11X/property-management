@@ -52,7 +52,7 @@
 
 <script lang="ts" setup>
 import { reactive, ref, onMounted } from 'vue'
-import type { FormInstance } from 'element-plus'
+import { ElMessage, FormInstance } from 'element-plus'
 import * as ck from '../../utils/verification.js'
 import link from '../../api/Link.js'
 import apiUrl from '../../api/url.js'
@@ -125,10 +125,24 @@ const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid) => {
     if (valid) {
-      console.log('submit!')
-      link(apiUrl.one).then((ok: any) => {
-        console.log(ok)
-      })
+      if(model.value === "login") {
+        console.log("denglu")
+      } else {
+        let data = {
+          name: ruleForm.userName,
+          pwd: ruleForm.password
+        }
+        link(apiUrl.register, "POST", data).then((ok: any) => {
+          console.log(ok)
+          if(Object.keys(ok.data).length !== 0) {
+            ElMessage("注册成功")
+            model.value = "login"
+            MenuData.forEach(v => v.current = !v.current)
+          } else {
+            ElMessage.error("注册失败")
+          }
+        })
+      }
     } else {
       console.log('error submit!')
       return false
