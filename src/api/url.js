@@ -1,5 +1,5 @@
 let apiUrl = {
-  xxx: "???"
+  one: "http://localhost:8888/one"
 }
 
 export default apiUrl

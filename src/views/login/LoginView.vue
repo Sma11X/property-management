@@ -54,6 +54,8 @@
 import { reactive, ref } from 'vue'
 import type { FormInstance } from 'element-plus'
 import * as ck from '../../utils/verification.js'
+import link from '../../api/Link.js'
+import apiUrl from '../../api/url.js'
 
 const MenuData = reactive([
   {txt: "登录", current: true, type: "login"},
@@ -120,6 +122,9 @@ const submitForm = (formEl: FormInstance | undefined) => {
   formEl.validate((valid) => {
     if (valid) {
       console.log('submit!')
+      link(apiUrl.one).then((ok: any) => {
+        console.log(ok)
+      })
     } else {
       console.log('error submit!')
       return false

@@ -1,6 +1,6 @@
 import service from "../utils/service.js"
 
-let link = (url, method, data, params) => {
+let link = (url, method = "get", data, params) => {
   return new Promise((resolve, reject) => {
     service.request({
       url,
